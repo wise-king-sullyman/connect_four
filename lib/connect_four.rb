@@ -68,4 +68,15 @@ class Game
 
     puts "#{@winner} Won!"
   end
+
+  def inline_win(grid, player)
+    grid.each do |row|
+      symbol_counter = 0
+      row.each do |char|
+        char == player.symbol ? symbol_counter += 1 : symbol_counter = 0
+        return true if symbol_counter == 4
+      end
+    end
+    false
+  end
 end
