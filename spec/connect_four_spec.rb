@@ -52,7 +52,7 @@ describe Board do
   before do
     allow($stdout).to receive(:write)
   end
-  
+
   subject { Board.new }
   
   describe '#create_grid' do
@@ -99,12 +99,42 @@ describe Board do
       end
 
       it 'prints column full' do
-        #allow($stdout).to receive(:write)
         existing_grid = [[0, 0, 0, 0, 0, 0], ['#', '#', '@', '#', '@', '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
         subject.instance_variable_set('@grid', existing_grid)
         expect do
           subject.update(1, player.symbol)
         end.to output("column full\n").to_stdout
+      end
+    end
+  end
+end
+
+describe Game do
+  before do
+    allow($stdout).to receive(:write)
+  end
+
+  subject { Game.new }
+
+  describe '#welcome' do
+    it 'prints the welcome message' do
+      expect do
+        subject.welcome
+      end.to output("Welcome to connect four!\n").to_stdout
+    end
+  end
+
+  describe '#end' do
+    context 'tie game' do
+      it 'prints tie game' do
+        expect { subject.end }.to output("Tie Game!\n").to_stdout
+      end
+    end
+
+    context 'won game' do
+      it 'prints {winner} won!' do
+        subject.instance_variable_set('@winner', 'player 1')
+        expect { subject.end }.to output("player 1 Won!\n").to_stdout
       end
     end
   end

@@ -27,6 +27,7 @@ class Player
 end
 
 class Board
+  attr_reader :grid
   def initialize
     @grid = create_grid
   end
@@ -48,5 +49,23 @@ class Board
     return puts 'column full' if empty_rows.zero?
 
     @grid[column][empty_rows - 1] = symbol
+  end
+end
+
+class Game
+  def initialize
+    @board = Board.new
+    @players = [Player.new('player 1', '#'), Player.new('player 2', '@')]
+    @winner = nil
+  end
+
+  def welcome
+    puts 'Welcome to connect four!'
+  end
+
+  def end
+    return puts 'Tie Game!' unless @winner
+
+    puts "#{@winner} Won!"
   end
 end
