@@ -214,4 +214,20 @@ describe Game do
       end
     end
   end
+
+  describe '#tie_game' do
+    context 'when the board is full' do
+      it 'returns true' do
+        grid = [['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@']]
+        expect(subject.tie_game(grid)).to be true
+      end
+    end
+
+    context 'when the board is not full' do
+      it 'returns false' do
+        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.tie_game(grid)).to be false
+      end
+    end
+  end
 end

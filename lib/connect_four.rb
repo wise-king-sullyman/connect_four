@@ -99,4 +99,11 @@ class Game
       column.rotate(index * shift_direction)
     end
   end
+
+  def tie_game(grid)
+    grid.each do |column|
+      return false if column.include?('O')
+    end
+    true
+  end
 end
