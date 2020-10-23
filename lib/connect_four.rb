@@ -27,7 +27,7 @@ class Player
 end
 
 class Board
-  attr_reader :grid
+  attr_accessor :grid
   def initialize
     @grid = create_grid
   end
@@ -35,7 +35,7 @@ class Board
   def create_grid
     blank_grid = []
     7.times { blank_grid.push([]) }
-    blank_grid.each { |row| 6.times { row.push(0) } }
+    blank_grid.each { |row| 6.times { row.push('O') } }
   end
 
   def to_s
@@ -45,7 +45,7 @@ class Board
   end
 
   def update(column, symbol)
-    empty_rows = @grid[column].count(0)
+    empty_rows = @grid[column].count('O')
     return puts 'column full' if empty_rows.zero?
 
     @grid[column][empty_rows - 1] = symbol
@@ -78,5 +78,25 @@ class Game
       end
     end
     false
+  end
+
+  def column_win(grid, player)
+    inline_win(grid, player)
+  end
+
+  def row_win(grid, player)
+    inline_win(grid.transpose, player)
+  end
+
+  def diagonal_win(grid, player)
+    return true if inline_win(shift_grid(grid, 1).transpose, player)
+
+    inline_win(shift_grid(grid, -1).transpose, player)
+  end
+
+  def shift_grid(grid, shift_direction)
+    grid.map.with_index do |column, index|
+      column.rotate(index * shift_direction)
+    end
   end
 end

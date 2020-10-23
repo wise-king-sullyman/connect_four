@@ -57,15 +57,16 @@ describe Board do
   
   describe '#create_grid' do
     it 'returns a blank grid' do
-      grid_example = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+      grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
       expect(subject.create_grid).to eql(grid_example)
     end
   end
 
   describe '#to_s' do
     it 'returns grid in a readable pattern' do
-      grid_example = "[0, 0, 0, 0, 0, 0, 0]\n[0, 0, 0, 0, 0, 0, 0]\n[0, 0, 0, 0, 0, 0, 0]\n[0, 0, 0, 0, 0, 0, 0]\n[0, 0, 0, 0, 0, 0, 0]\n[0, 0, 0, 0, 0, 0, 0]\n"
-      expect(subject.to_s).to eql(grid_example)
+      #grid_example =  "[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n"
+      grid_example = "[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n"
+      expect(subject.to_s).to eq(grid_example)
     end
   end
 
@@ -73,7 +74,7 @@ describe Board do
     let(:player) { Player.new('player 1', '#') }
     context 'when column is empty' do
       it 'adds symbol to last row of desired column' do
-        grid_example = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         subject.update(1, player.symbol)
         expect(subject.instance_variable_get('@grid')).to eql(grid_example)
       end
@@ -81,8 +82,8 @@ describe Board do
 
     context 'when column is partially blank' do
       it 'adds symbol to next available slot in column' do
-        existing_grid = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, '@', '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-        grid_example = [[0, 0, 0, 0, 0, 0], [0, 0, 0, '#', '@', '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        existing_grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         subject.instance_variable_set('@grid', existing_grid)
         subject.update(1, player.symbol)
         expect(subject.instance_variable_get('@grid')).to eql(grid_example)
@@ -91,15 +92,15 @@ describe Board do
 
     context 'when column is full' do
       it 'does not change the grid' do
-        existing_grid = [[0, 0, 0, 0, 0, 0], ['#', '#', '@', '#', '@', '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-        grid_example = [[0, 0, 0, 0, 0, 0], ['#', '#', '@', '#', '@', '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        existing_grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['#', '#', '@', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['#', '#', '@', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         subject.instance_variable_set('@grid', existing_grid)
         subject.update(1, player.symbol)
         expect(subject.instance_variable_get('@grid')).to eql(grid_example)
       end
 
       it 'prints column full' do
-        existing_grid = [[0, 0, 0, 0, 0, 0], ['#', '#', '@', '#', '@', '#'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        existing_grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['#', '#', '@', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         subject.instance_variable_set('@grid', existing_grid)
         expect do
           subject.update(1, player.symbol)
@@ -111,7 +112,7 @@ end
 
 describe Game do
   before do
-    allow($stdout).to receive(:write)
+    #allow($stdout).to receive(:write)
   end
 
   subject { Game.new }
@@ -143,15 +144,73 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when a winning combination exists' do
       it 'returns true' do
-        grid = [[0, 0, 0, 0, 0, 0], [0, '#', '#', '#', '#', '@'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', '#', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         expect(subject.inline_win(grid, player)).to be true
       end
     end
 
     context 'when a winning combination does not exist' do
       it 'returns false' do
-        grid = [[0, 0, 0, 0, 0, 0], [0, '#', '#', '#', '@', '@'], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', '#', '#', '#', '@', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         expect(subject.inline_win(grid, player)).to be false
+      end
+    end
+  end
+
+  describe '#column_win' do
+    let(:player) { Player.new('player 1', '#') }
+    context 'when a column win is present' do
+      it 'returns true' do
+        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', '#', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.column_win(grid, player)).to be true
+      end
+    end
+
+    context 'when no win is present' do
+      it 'returns false' do
+        grid = [['O', 'O', 'O', 'O', 'O', '#'], ['O', '#', '#', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#']]
+        expect(subject.column_win(grid, player)).to be false
+      end
+    end
+  end
+
+  describe '#row_win' do
+    let(:player) { Player.new('player 1', '#') }
+    context 'when a row win is present' do
+      it 'returns true' do
+        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', '#', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.row_win(grid, player)).to be true
+      end
+    end
+
+    context 'when no win is present' do
+      it 'returns false' do
+        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.row_win(grid, player)).to be false
+      end
+    end
+  end
+
+  describe '#diagonal_win' do
+    let(:player) { Player.new('player 1', '#') }
+    context 'when an upper diagonal win is present' do
+      it 'returns true' do
+        grid = [['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', '#', 'O', 'O'], ['O', 'O', '#', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.diagonal_win(grid, player)).to be true
+      end
+    end
+
+    context 'when a lower diagonal win is present' do
+      it 'returns true' do
+        grid = [['O', 'O', '#', 'O', '#', 'O'], ['O', '#', 'O', '#', '#', '#'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.diagonal_win(grid, player)).to be true
+      end
+    end
+
+    context 'when no win is present' do
+      it 'returns false' do
+        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.diagonal_win(grid, player)).to be false
       end
     end
   end
