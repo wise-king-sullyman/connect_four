@@ -69,7 +69,7 @@ class Game
     puts "#{@winner} Won!"
   end
 
-  def inline_win(grid, player)
+  def inline_win?(grid, player)
     grid.each do |row|
       symbol_counter = 0
       row.each do |char|
@@ -80,18 +80,18 @@ class Game
     false
   end
 
-  def column_win(grid, player)
-    inline_win(grid, player)
+  def column_win?(grid, player)
+    inline_win?(grid, player)
   end
 
-  def row_win(grid, player)
-    inline_win(grid.transpose, player)
+  def row_win?(grid, player)
+    inline_win?(grid.transpose, player)
   end
 
-  def diagonal_win(grid, player)
-    return true if inline_win(shift_grid(grid, 1).transpose, player)
+  def diagonal_win?(grid, player)
+    return true if inline_win?(shift_grid(grid, 1).transpose, player)
 
-    inline_win(shift_grid(grid, -1).transpose, player)
+    inline_win?(shift_grid(grid, -1).transpose, player)
   end
 
   def shift_grid(grid, shift_direction)
@@ -100,7 +100,7 @@ class Game
     end
   end
 
-  def tie_game(grid)
+  def tie_game?(grid)
     grid.each do |column|
       return false if column.include?('O')
     end
