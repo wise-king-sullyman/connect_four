@@ -112,7 +112,7 @@ end
 
 describe Game do
   before do
-    #allow($stdout).to receive(:write)
+    allow($stdout).to receive(:write)
   end
 
   subject { Game.new }
@@ -125,17 +125,19 @@ describe Game do
     end
   end
 
-  describe '#end' do
+  describe '#end_message' do
+    let(:player) { Player.new('player 1', '#') }
     context 'when game ended in a tie' do
       it 'prints tie game' do
-        expect { subject.end }.to output("Tie Game!\n").to_stdout
+        subject.instance_variable_set('@winner', true)
+        expect { subject.end_message }.to output("Tie Game!\n").to_stdout
       end
     end
 
     context 'when game ended in a win' do
       it 'prints {winner} won!' do
-        subject.instance_variable_set('@winner', 'player 1')
-        expect { subject.end }.to output("player 1 Won!\n").to_stdout
+        subject.instance_variable_set('@winner', player)
+        expect { subject.end_message }.to output("player 1 Won!\n").to_stdout
       end
     end
   end
@@ -251,6 +253,53 @@ describe Game do
       it 'returns false' do
         grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '@', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         expect(subject.game_over(grid, player)).to be false
+      end
+    end
+  end
+
+  describe '#play' do
+    let(:players) { subject.instance_variable_get('@players') }
+
+    context 'when player 1 gets a column win' do
+      it 'returns "player 1"' do
+        allow(players.first).to receive(:gets).and_return(1.to_s, 1.to_s, 1.to_s, 1.to_s)
+        allow(players.last).to receive(:gets).and_return(2.to_s, 2.to_s, 2.to_s, 2.to_s)
+        expect(subject.play.name).to eql('player 1')
+      end
+    end
+
+    context 'when player 1 gets a row win' do
+      it 'returns "player 1"' do
+        allow(players.first).to receive(:gets).and_return(1.to_s, 2.to_s, 3.to_s, 4.to_s)
+        allow(players.last).to receive(:gets).and_return(1.to_s, 2.to_s, 3.to_s, 4.to_s)
+        expect(subject.play.name).to eql('player 1')
+      end
+    end
+
+    context 'when player 1 gets a diagonal win' do
+      it 'returns "player 1"' do
+        allow(players.first).to receive(:gets).and_return(1.to_s, 2.to_s, 3.to_s, 3.to_s, 4.to_s, 4.to_s)
+        allow(players.last).to receive(:gets).and_return(2.to_s, 2.to_s, 3.to_s, 4.to_s, 4.to_s)
+        expect(subject.play.name).to eql('player 1')
+      end
+    end
+
+    context 'when player 2 gets a diagnoal win' do
+      it 'returns "player 2"' do
+        allow(players.first).to receive(:gets).and_return(1.to_s, 1.to_s, 2.to_s, 3.to_s, 5.to_s, 5.to_s)
+        allow(players.last).to receive(:gets).and_return(1.to_s, 1.to_s, 2.to_s, 2.to_s, 3.to_s, 4.to_s)
+        expect(subject.play.name).to eql('player 2')
+      end
+    end
+
+    context 'when game ends in tie' do
+      it 'returns true' do
+        board = Board.new
+        board.grid = [['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '#', '#'], ['@', '#', '@', '#', '@', '#'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['#', '#', '#', '@', '@', '#'], ['@', '#', '#', '@', '#', '#']]
+        subject.instance_variable_set('@board', board)
+        allow(players.first).to receive(:gets).and_return(1.to_s)
+        allow(players.last).to receive(:gets).and_return(1.to_s)
+        expect(subject.play).to eql(true)
       end
     end
   end

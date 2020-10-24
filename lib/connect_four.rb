@@ -63,10 +63,10 @@ class Game
     puts 'Welcome to connect four!'
   end
 
-  def end
-    return puts 'Tie Game!' unless @winner
+  def end_message
+    return puts 'Tie Game!' unless @winner.respond_to? :name
 
-    puts "#{@winner} Won!"
+    puts "#{@winner.name} Won!"
   end
 
   def inline_win?(grid, player)
@@ -105,12 +105,11 @@ class Game
       if shift_direction.negative?
         keep = column.first(6 - index)
         keep.push('O') until keep.size == 6
-        keep
       else
         keep = column.last(6 - index)
         keep.unshift('O') until keep.size == 6
-        keep
       end
+      keep
     end
   end
 
@@ -129,5 +128,19 @@ class Game
     else
       false
     end
+  end
+
+  def play
+    welcome
+    until @winner
+      @players.each do |player|
+        @board.update(player.choose_column, player.symbol)
+        puts @board
+        @winner = game_over(@board.grid, player)
+        break if @winner
+      end
+    end
+    end_message
+    @winner
   end
 end
