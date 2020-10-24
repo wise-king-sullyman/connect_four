@@ -195,14 +195,14 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when an upper diagonal win is present' do
       it 'returns true' do
-        grid = [['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', '#', 'O', 'O'], ['O', 'O', '#', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', '#', '#', 'O', 'O'], ['O', 'O', '#', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         expect(subject.diagonal_win?(grid, player)).to be true
       end
     end
 
     context 'when a lower diagonal win is present' do
       it 'returns true' do
-        grid = [['O', 'O', '#', 'O', '#', 'O'], ['O', '#', 'O', '#', '#', '#'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [['O', 'O', '#', 'O', '@', 'O'], ['O', '#', 'O', '#', '#', '#'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         expect(subject.diagonal_win?(grid, player)).to be true
       end
     end
@@ -227,6 +227,30 @@ describe Game do
       it 'returns false' do
         grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
         expect(subject.tie_game?(grid)).to be false
+      end
+    end
+  end
+
+  describe '#game_over' do
+    let(:player) { Player.new('player 1', '#') }
+    context 'when the game is won by {player}' do
+      it 'returns the winning player' do
+        grid = [['O', 'O', '#', 'O', '#', 'O'], ['O', '#', 'O', '#', '#', '#'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when the game is ended with a tie' do
+      it 'returns true' do
+        grid = [['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '#', '#'], ['@', '#', '@', '#', '@', '#'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['#', '#', '#', '@', '@', '#'], ['@', '#', '#', '@', '#', '#']]
+        expect(subject.game_over(grid, player)).to eql(true)
+      end
+    end
+
+    context 'when the game is not over' do
+      it 'returns false' do
+        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '@', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        expect(subject.game_over(grid, player)).to be false
       end
     end
   end

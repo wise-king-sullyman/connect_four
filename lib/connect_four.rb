@@ -95,8 +95,22 @@ class Game
   end
 
   def shift_grid(grid, shift_direction)
-    grid.map.with_index do |column, index|
+    remove_rollovers(grid, shift_direction).map.with_index do |column, index|
       column.rotate(index * shift_direction)
+    end
+  end
+
+  def remove_rollovers(grid, shift_direction)
+    grid.map.with_index do |column, index|
+      if shift_direction.negative?
+        keep = column.first(6 - index)
+        keep.push('O') until keep.size == 6
+        keep
+      else
+        keep = column.last(6 - index)
+        keep.unshift('O') until keep.size == 6
+        keep
+      end
     end
   end
 
@@ -105,5 +119,15 @@ class Game
       return false if column.include?('O')
     end
     true
+  end
+
+  def game_over(grid, player)
+    if column_win?(grid, player) || row_win?(grid, player) || diagonal_win?(grid, player)
+      player
+    elsif tie_game?(grid)
+      true
+    else
+      false
+    end
   end
 end
