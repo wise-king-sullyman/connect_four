@@ -165,84 +165,35 @@ describe Game do
     end
   end
 
-  describe '#inline_win?' do
-    let(:player) { Player.new('player 1', '#') }
-    context 'when a winning combination exists' do
-      it 'returns true' do
-        grid = [
-          %w[O O O O O O], %w[O # # # # @], %w[O O O O O O], %w[O O O O O O],
-          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
-        ]
-        expect(subject.inline_win?(grid, player)).to be true
-      end
-    end
-
-    context 'when a winning combination does not exist' do
-      it 'returns false' do
-        grid = [
-          %w[O O O O O O], %w[O # # # @ @], %w[O O O O O O], %w[O O O O O O],
-          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
-        ]
-        expect(subject.inline_win?(grid, player)).to be false
-      end
-    end
-  end
-
-  describe '#column_win?' do
+  describe '#game_over' do
     let(:player) { Player.new('player 1', '#') }
     context 'when a column win is present' do
       it 'returns true' do
         grid = [
-          %w[O O O O O O], %w[O # # # # @], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O # # # # O], %w[O O O O O O], %w[O O O O O O],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
         ]
-        expect(subject.column_win?(grid, player)).to be true
+        expect(subject.game_over(grid, player)).to equal(player)
       end
     end
 
-    context 'when no win is present' do
-      it 'returns false' do
-        grid = [
-          %w[O O O O O #], %w[O # # # @ #], %w[O O O O O #], %w[O O O O O #],
-          %w[O O O O O #], %w[O O O O O #], %w[O O O O O #]
-        ]
-        expect(subject.column_win?(grid, player)).to be false
-      end
-    end
-  end
-
-  describe '#row_win?' do
-    let(:player) { Player.new('player 1', '#') }
     context 'when a row win is present' do
       it 'returns true' do
         grid = [
-          %w[O O O O # O], %w[O # # # # @], %w[O O O O # O], %w[O O O O # O],
+          %w[O O O O # O], %w[O O O O # O], %w[O O O O # O], %w[O O O O # O],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
         ]
-        expect(subject.row_win?(grid, player)).to be true
+        expect(subject.game_over(grid, player)).to equal(player)
       end
     end
 
-    context 'when no win is present' do
-      it 'returns false' do
-        grid = [
-          %w[O O O O O O], %w[O O # # # @], %w[O O O O O O], %w[O O O O O O],
-          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
-        ]
-        expect(subject.row_win?(grid, player)).to be false
-      end
-    end
-  end
-
-  describe '#diagonal_win?' do
-    let(:player) { Player.new('player 1', '#') }
     context 'when an upper diagonal win is present' do
       it 'returns true' do
         grid = [
           %w[O O O O # #], %w[O O # # # @], %w[O O # # O O], %w[O O # O # O],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
         ]
-        expect(subject.diagonal_win?(grid, player)).to be true
+        expect(subject.game_over(grid, player)).to equal(player)
       end
     end
 
@@ -250,51 +201,6 @@ describe Game do
       it 'returns true' do
         grid = [
           %w[O O # O @ O], %w[O # O # # #], %w[O O O O # O], %w[O O O O # #],
-          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
-        ]
-        expect(subject.diagonal_win?(grid, player)).to be true
-      end
-    end
-
-    context 'when no win is present' do
-      it 'returns false' do
-        grid = [
-          %w[O O O O # O], %w[O O # # # @], %w[O O O O # O], %w[O O O O # O],
-          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
-        ]
-        expect(subject.diagonal_win?(grid, player)).to be false
-      end
-    end
-  end
-
-  describe '#tie_game?' do
-    context 'when the board is full' do
-      it 'returns true' do
-        grid = [
-          %w[# @ # @ # @], %w[@ # @ # @ #], %w[# @ # @ # @], %w[@ # @ # @ #],
-          %w[# @ # @ # @], %w[@ # @ # @ #], %w[# @ # @ # @]
-        ]
-        expect(subject.tie_game?(grid)).to be true
-      end
-    end
-
-    context 'when the board is not full' do
-      it 'returns false' do
-        grid = [
-          %w[O O O O # O], %w[O O # # # @], %w[O O O O # O], %w[O O O O # O],
-          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
-        ]
-        expect(subject.tie_game?(grid)).to be false
-      end
-    end
-  end
-
-  describe '#game_over' do
-    let(:player) { Player.new('player 1', '#') }
-    context 'when the game is won by {player}' do
-      it 'returns the winning player' do
-        grid = [
-          %w[O O # O # O], %w[O # O # # #], %w[O O O O # O], %w[O O O O # #],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
         ]
         expect(subject.game_over(grid, player)).to equal(player)
