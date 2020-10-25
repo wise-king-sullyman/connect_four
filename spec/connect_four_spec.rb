@@ -168,7 +168,7 @@ describe Game do
   describe '#game_over' do
     let(:player) { Player.new('player 1', '#') }
     context 'when a column win is present' do
-      it 'returns true' do
+      it 'returns winning player' do
         grid = [
           %w[O O O O O O], %w[O # # # # O], %w[O O O O O O], %w[O O O O O O],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
@@ -178,7 +178,7 @@ describe Game do
     end
 
     context 'when a row win is present' do
-      it 'returns true' do
+      it 'returns winning player' do
         grid = [
           %w[O O O O # O], %w[O O O O # O], %w[O O O O # O], %w[O O O O # O],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
@@ -188,7 +188,7 @@ describe Game do
     end
 
     context 'when an upper diagonal win is present' do
-      it 'returns true' do
+      it 'returns winning player' do
         grid = [
           %w[O O O O # #], %w[O O # # # @], %w[O O # # O O], %w[O O # O # O],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
@@ -198,7 +198,7 @@ describe Game do
     end
 
     context 'when a lower diagonal win is present' do
-      it 'returns true' do
+      it 'returns winning player' do
         grid = [
           %w[O O # O @ O], %w[O # O # # #], %w[O O O O # O], %w[O O O O # #],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
