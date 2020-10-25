@@ -7,7 +7,7 @@ describe Player do
     allow($stdout).to receive(:write)
   end
 
-  subject { Player.new('player 1', '@')}
+  subject { Player.new('player 1', '@') }
   describe '#request_input' do
     it 'asks the user for input' do
       output_string = "player 1 enter a number 1 - 7 to pick a column\n"
@@ -20,7 +20,7 @@ describe Player do
   describe '#input_valid?' do
     context 'when valid input given' do
       it 'returns true' do
-      expect(subject.input_valid?(3)).to be true
+        expect(subject.input_valid?(3)).to be true
       end
     end
 
@@ -54,17 +54,23 @@ describe Board do
   end
 
   subject { Board.new }
-  
+
   describe '#create_grid' do
     it 'returns a blank grid' do
-      grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+      grid_example = [
+        %w[O O O O O O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O],
+        %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+      ]
       expect(subject.create_grid).to eql(grid_example)
     end
   end
 
   describe '#to_s' do
     it 'returns grid in a readable pattern' do
-      grid_example = " 1  2  3  4  5  6  7\n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n"
+      grid_example =
+        " 1  2  3  4  5  6  7\n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n"\
+       " O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n"\
+        " O  O  O  O  O  O  O \n"
       expect(subject.to_s).to eq(grid_example)
     end
   end
@@ -73,7 +79,10 @@ describe Board do
     let(:player) { Player.new('player 1', '#') }
     context 'when column is empty' do
       it 'adds symbol to last row of desired column' do
-        grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid_example = [
+          %w[O O O O O O], %w[O O O O O #], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         subject.update(1, player.symbol)
         expect(subject.instance_variable_get('@grid')).to eql(grid_example)
       end
@@ -81,8 +90,14 @@ describe Board do
 
     context 'when column is partially blank' do
       it 'adds symbol to next available slot in column' do
-        existing_grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
-        grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        existing_grid = [
+          %w[O O O O O O], %w[O O O O @ #], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
+        grid_example = [
+          %w[O O O O O O], %w[O O O # @ #], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         subject.instance_variable_set('@grid', existing_grid)
         subject.update(1, player.symbol)
         expect(subject.instance_variable_get('@grid')).to eql(grid_example)
@@ -91,15 +106,24 @@ describe Board do
 
     context 'when column is full' do
       it 'does not change the grid' do
-        existing_grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['#', '#', '@', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
-        grid_example = [['O', 'O', 'O', 'O', 'O', 'O'], ['#', '#', '@', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        existing_grid = [
+          %w[O O O O O O], %w[# # @ # @ #], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
+        grid_example = [
+          %w[O O O O O O], %w[# # @ # @ #], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         subject.instance_variable_set('@grid', existing_grid)
         subject.update(1, player.symbol)
         expect(subject.instance_variable_get('@grid')).to eql(grid_example)
       end
 
       it 'prints column full' do
-        existing_grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['#', '#', '@', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        existing_grid = [
+          %w[O O O O O O], %w[# # @ # @ #], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         subject.instance_variable_set('@grid', existing_grid)
         expect do
           subject.update(1, player.symbol)
@@ -145,14 +169,20 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when a winning combination exists' do
       it 'returns true' do
-        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', '#', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O O O], %w[O # # # # @], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.inline_win?(grid, player)).to be true
       end
     end
 
     context 'when a winning combination does not exist' do
       it 'returns false' do
-        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', '#', '#', '#', '@', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O O O], %w[O # # # @ @], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.inline_win?(grid, player)).to be false
       end
     end
@@ -162,14 +192,20 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when a column win is present' do
       it 'returns true' do
-        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', '#', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O O O], %w[O # # # # @], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.column_win?(grid, player)).to be true
       end
     end
 
     context 'when no win is present' do
       it 'returns false' do
-        grid = [['O', 'O', 'O', 'O', 'O', '#'], ['O', '#', '#', '#', '@', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#'], ['O', 'O', 'O', 'O', 'O', '#']]
+        grid = [
+          %w[O O O O O #], %w[O # # # @ #], %w[O O O O O #], %w[O O O O O #],
+          %w[O O O O O #], %w[O O O O O #], %w[O O O O O #]
+        ]
         expect(subject.column_win?(grid, player)).to be false
       end
     end
@@ -179,14 +215,20 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when a row win is present' do
       it 'returns true' do
-        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', '#', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O # O], %w[O # # # # @], %w[O O O O # O], %w[O O O O # O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.row_win?(grid, player)).to be true
       end
     end
 
     context 'when no win is present' do
       it 'returns false' do
-        grid = [['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O O O], %w[O O # # # @], %w[O O O O O O], %w[O O O O O O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.row_win?(grid, player)).to be false
       end
     end
@@ -196,21 +238,30 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when an upper diagonal win is present' do
       it 'returns true' do
-        grid = [['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', '#', '#', 'O', 'O'], ['O', 'O', '#', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O # #], %w[O O # # # @], %w[O O # # O O], %w[O O # O # O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.diagonal_win?(grid, player)).to be true
       end
     end
 
     context 'when a lower diagonal win is present' do
       it 'returns true' do
-        grid = [['O', 'O', '#', 'O', '@', 'O'], ['O', '#', 'O', '#', '#', '#'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O # O @ O], %w[O # O # # #], %w[O O O O # O], %w[O O O O # #],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.diagonal_win?(grid, player)).to be true
       end
     end
 
     context 'when no win is present' do
       it 'returns false' do
-        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O # O], %w[O O # # # @], %w[O O O O # O], %w[O O O O # O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.diagonal_win?(grid, player)).to be false
       end
     end
@@ -219,14 +270,20 @@ describe Game do
   describe '#tie_game?' do
     context 'when the board is full' do
       it 'returns true' do
-        grid = [['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@']]
+        grid = [
+          %w[# @ # @ # @], %w[@ # @ # @ #], %w[# @ # @ # @], %w[@ # @ # @ #],
+          %w[# @ # @ # @], %w[@ # @ # @ #], %w[# @ # @ # @]
+        ]
         expect(subject.tie_game?(grid)).to be true
       end
     end
 
     context 'when the board is not full' do
       it 'returns false' do
-        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O # O], %w[O O # # # @], %w[O O O O # O], %w[O O O O # O],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.tie_game?(grid)).to be false
       end
     end
@@ -236,21 +293,30 @@ describe Game do
     let(:player) { Player.new('player 1', '#') }
     context 'when the game is won by {player}' do
       it 'returns the winning player' do
-        grid = [['O', 'O', '#', 'O', '#', 'O'], ['O', '#', 'O', '#', '#', '#'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', '#', '#'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O # O # O], %w[O # O # # #], %w[O O O O # O], %w[O O O O # #],
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.game_over(grid, player)).to equal(player)
       end
     end
 
     context 'when the game is ended with a tie' do
       it 'returns true' do
-        grid = [['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '#', '#'], ['@', '#', '@', '#', '@', '#'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['#', '#', '#', '@', '@', '#'], ['@', '#', '#', '@', '#', '#']]
+        grid = [
+          %w[# @ # @ # @], %w[@ # @ # # #], %w[@ # @ # @ #], %w[@ # @ # @ #],
+          %w[# @ # @ # @], %w[# # # @ @ #], %w[@ # # @ # #]
+        ]
         expect(subject.game_over(grid, player)).to eql(true)
       end
     end
 
     context 'when the game is not over' do
       it 'returns false' do
-        grid = [['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', '#', '#', '#', '@'], ['O', 'O', 'O', 'O', '@', '@'], ['O', 'O', 'O', 'O', '#', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O'], ['O', 'O', 'O', 'O', 'O', 'O']]
+        grid = [
+          %w[O O O O # O], %w[O O # # # @], %w[O O O O @ @],
+          %w[O O O O # O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
         expect(subject.game_over(grid, player)).to be false
       end
     end
@@ -261,32 +327,79 @@ describe Game do
 
     context 'when player 1 gets a column win' do
       it 'returns "player 1"' do
-        allow(players.first).to receive(:gets).and_return(1.to_s, 1.to_s, 1.to_s, 1.to_s)
-        allow(players.last).to receive(:gets).and_return(2.to_s, 2.to_s, 2.to_s, 2.to_s)
+        allow(players.first).to receive(:gets).and_return(
+          1.to_s,
+          1.to_s,
+          1.to_s,
+          1.to_s
+        )
+        allow(players.last).to receive(:gets).and_return(
+          2.to_s,
+          2.to_s,
+          2.to_s,
+          2.to_s
+        )
         expect(subject.play.name).to eql('player 1')
       end
     end
 
     context 'when player 1 gets a row win' do
       it 'returns "player 1"' do
-        allow(players.first).to receive(:gets).and_return(1.to_s, 2.to_s, 3.to_s, 4.to_s)
-        allow(players.last).to receive(:gets).and_return(1.to_s, 2.to_s, 3.to_s, 4.to_s)
+        allow(players.first).to receive(:gets).and_return(
+          1.to_s,
+          2.to_s,
+          3.to_s,
+          4.to_s
+        )
+        allow(players.last).to receive(:gets).and_return(
+          1.to_s,
+          2.to_s,
+          3.to_s,
+          4.to_s
+        )
         expect(subject.play.name).to eql('player 1')
       end
     end
 
     context 'when player 1 gets a diagonal win' do
       it 'returns "player 1"' do
-        allow(players.first).to receive(:gets).and_return(1.to_s, 2.to_s, 3.to_s, 3.to_s, 4.to_s, 4.to_s)
-        allow(players.last).to receive(:gets).and_return(2.to_s, 2.to_s, 3.to_s, 4.to_s, 4.to_s)
+        allow(players.first).to receive(:gets).and_return(
+          1.to_s,
+          2.to_s,
+          3.to_s,
+          3.to_s,
+          4.to_s,
+          4.to_s
+        )
+        allow(players.last).to receive(:gets).and_return(
+          2.to_s,
+          2.to_s,
+          3.to_s,
+          4.to_s,
+          4.to_s
+        )
         expect(subject.play.name).to eql('player 1')
       end
     end
 
     context 'when player 2 gets a diagnoal win' do
       it 'returns "player 2"' do
-        allow(players.first).to receive(:gets).and_return(1.to_s, 1.to_s, 2.to_s, 3.to_s, 5.to_s, 5.to_s)
-        allow(players.last).to receive(:gets).and_return(1.to_s, 1.to_s, 2.to_s, 2.to_s, 3.to_s, 4.to_s)
+        allow(players.first).to receive(:gets).and_return(
+          1.to_s,
+          1.to_s,
+          2.to_s,
+          3.to_s,
+          5.to_s,
+          5.to_s
+        )
+        allow(players.last).to receive(:gets).and_return(
+          1.to_s,
+          1.to_s,
+          2.to_s,
+          2.to_s,
+          3.to_s,
+          4.to_s
+        )
         expect(subject.play.name).to eql('player 2')
       end
     end
@@ -294,7 +407,10 @@ describe Game do
     context 'when game ends in tie' do
       it 'returns true' do
         board = Board.new
-        board.grid = [['#', '@', '#', '@', '#', '@'], ['@', '#', '@', '#', '#', '#'], ['@', '#', '@', '#', '@', '#'], ['@', '#', '@', '#', '@', '#'], ['#', '@', '#', '@', '#', '@'], ['#', '#', '#', '@', '@', '#'], ['@', '#', '#', '@', '#', '#']]
+        board.grid = [
+          %w[# @ # @ # @], %w[@ # @ # # #], %w[@ # @ # @ #], %w[@ # @ # @ #],
+          %w[# @ # @ # @], %w[# # # @ @ #], %w[@ # # @ # #]
+        ]
         subject.instance_variable_set('@board', board)
         allow(players.first).to receive(:gets).and_return(1.to_s)
         allow(players.last).to receive(:gets).and_return(1.to_s)
