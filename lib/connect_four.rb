@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Responsible for actions/properties of the players
 class Player
   attr_accessor :name, :symbol
   def initialize(name, symbol)
@@ -26,6 +27,7 @@ class Player
   end
 end
 
+# Responsible for management of the game board
 class Board
   attr_accessor :grid
   def initialize
@@ -57,6 +59,7 @@ class Board
   end
 end
 
+# Responsible for game operation
 class Game
   def initialize
     @board = Board.new
@@ -127,13 +130,17 @@ class Game
   end
 
   def game_over(grid, player)
-    if column_win?(grid, player) || row_win?(grid, player) || diagonal_win?(grid, player)
+    if player_win?(grid, player)
       player
     elsif tie_game?(grid)
       true
-    else
-      false
     end
+  end
+
+  def player_win?(grid, player)
+    column_win?(grid, player) \
+    || row_win?(grid, player) \
+    || diagonal_win?(grid, player)
   end
 
   def play
@@ -146,7 +153,6 @@ class Game
         break if @winner
       end
     end
-    end_message
-    @winner
+    end_message || @winner
   end
 end

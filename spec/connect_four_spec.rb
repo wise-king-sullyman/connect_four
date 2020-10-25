@@ -298,12 +298,12 @@ describe Game do
     end
 
     context 'when the game is not over' do
-      it 'returns false' do
+      it 'returns nil' do
         grid = [
           %w[O O O O # O], %w[O O # # # @], %w[O O O O @ @],
           %w[O O O O # O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
         ]
-        expect(subject.game_over(grid, player)).to be false
+        expect(subject.game_over(grid, player)).to be nil
       end
     end
   end
