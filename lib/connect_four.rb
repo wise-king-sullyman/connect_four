@@ -94,9 +94,10 @@ class Game
   end
 
   def diagonal_win?(grid, player)
-    return true if inline_win?(shift_grid(grid, 1).transpose, player)
-
-    inline_win?(shift_grid(grid, -1).transpose, player)
+    inline_win?(shift_grid(grid, 1).transpose, player) ||
+      inline_win?(shift_grid(grid, -1).transpose, player) ||
+      inline_win?(shift_grid(grid.reverse, 1).transpose, player) ||
+      inline_win?(shift_grid(grid.reverse, -1).transpose, player)
   end
 
   def shift_grid(grid, shift_direction)

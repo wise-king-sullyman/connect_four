@@ -197,11 +197,91 @@ describe Game do
       end
     end
 
+    context 'when a different upper diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O], %w[O O O O O #],
+          %w[O O O O # O], %w[O O O # O O], %w[O O # O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when another different upper diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O #], %w[O O O O # O],
+          %w[O O O # O O], %w[O O # O O O], %w[O O O O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when a fourth upper diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O # O], %w[O O O # O O],
+          %w[O O # O O O], %w[O # O O O O], %w[O O O O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when a fifth upper diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O # O O], %w[O O # O O O], %w[O # O O O O],
+          %w[# O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
     context 'when a lower diagonal win is present' do
       it 'returns winning player' do
         grid = [
           %w[O O # O @ O], %w[O # O # # #], %w[O O O O # O], %w[O O O O # #],
           %w[O O O O O O], %w[O O O O O O], %w[O O O O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when a different lower diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O O O O], %w[O O O O O O], %w[# O O O O O],
+          %w[O # O O O O], %w[O O # O O O], %w[O O O # O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when another different lower diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O O O O], %w[O O # O O O], %w[O O O # O O],
+          %w[O O O O # O], %w[O O O O O #], %w[O O O O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when a fourth lower diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O O O O O], %w[O # O O O O], %w[O O # O O O],
+          %w[O O O # O O], %w[O O O O # O], %w[O O O O O O]
+        ]
+        expect(subject.game_over(grid, player)).to equal(player)
+      end
+    end
+
+    context 'when a fifth lower diagonal win is present' do
+      it 'returns winning player' do
+        grid = [
+          %w[O O O O O O], %w[O O # O O O], %w[O O O # O O], %w[O O O O # O],
+          %w[O O O O O #], %w[O O O O O O], %w[O O O O O O]
         ]
         expect(subject.game_over(grid, player)).to equal(player)
       end
