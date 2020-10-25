@@ -18,7 +18,7 @@ class Player
   end
 
   def request_input
-    puts 'Enter a number 1 - 7 to pick a column'
+    puts "#{name} enter a number 1 - 7 to pick a column"
   end
 
   def input_valid?(input)
@@ -39,8 +39,13 @@ class Board
   end
 
   def to_s
-    output_string = ''
-    @grid.transpose.each { |row| output_string += (row.to_s + "\n") }
+    output_string = " 1  2  3  4  5  6  7\n"
+    @grid.transpose.each do |row|
+      row.each do |char|
+        output_string += (' ' + char.to_s + ' ')
+      end
+      output_string += "\n"
+    end
     output_string
   end
 

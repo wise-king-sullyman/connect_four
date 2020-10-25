@@ -10,7 +10,7 @@ describe Player do
   subject { Player.new('player 1', '@')}
   describe '#request_input' do
     it 'asks the user for input' do
-      output_string = "Enter a number 1 - 7 to pick a column\n"
+      output_string = "player 1 enter a number 1 - 7 to pick a column\n"
       expect do
         subject.request_input
       end.to output(output_string).to_stdout
@@ -64,8 +64,7 @@ describe Board do
 
   describe '#to_s' do
     it 'returns grid in a readable pattern' do
-      #grid_example =  "[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\",]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n"
-      grid_example = "[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n[\"O\", \"O\", \"O\", \"O\", \"O\", \"O\", \"O\"]\n"
+      grid_example = " 1  2  3  4  5  6  7\n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n O  O  O  O  O  O  O \n"
       expect(subject.to_s).to eq(grid_example)
     end
   end
