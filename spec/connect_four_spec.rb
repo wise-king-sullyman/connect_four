@@ -313,18 +313,8 @@ describe Game do
 
     context 'when player 1 gets a column win' do
       it 'returns "player 1"' do
-        allow(players.first).to receive(:gets).and_return(
-          1.to_s,
-          1.to_s,
-          1.to_s,
-          1.to_s
-        )
-        allow(players.last).to receive(:gets).and_return(
-          2.to_s,
-          2.to_s,
-          2.to_s,
-          2.to_s
-        )
+        allow(players.first).to receive(:gets).and_return(1.to_s)
+        allow(players.last).to receive(:gets).and_return(2.to_s)
         expect(subject.play.name).to eql('player 1')
       end
     end
